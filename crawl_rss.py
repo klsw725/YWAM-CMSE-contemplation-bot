@@ -12,14 +12,15 @@ url = "https://cmsemeditation.blogspot.com/feeds/posts/default"
 
 def getBibleContent():
     d = feedparser.parse(url)
+    
     soup = BeautifulSoup(d.entries[0].summary,"html.parser")
+    # print(soup)
 
     dateStr = ""
     dateStr = str(datetime.today().year) + "년 " + str(datetime.today().month) + "월" + " " + str(datetime.today().day) + "일"
 
     dateStr1 = ""
     dateStr1 = str(datetime.today().year) + "-" + str(datetime.today().month).zfill(2) + "-" + str(datetime.today().day).zfill(2)
-
     result = re.search(dateStr1, d.entries[0].updated)
 
     if result:
@@ -28,9 +29,10 @@ def getBibleContent():
         content.append(soup.find("h1").string)
         content.append(soup.find("h3").string)
 
-        entry = soup.findAll("p")[1]
-        test1 = entry.findAll("span")
-        greenSpan = test1[0].find_all("span", attrs={'style': 'color: green;'})[0]
+        # entry = soup.findAll("p")[1]
+        
+        # test1 = soup.findAll("span")
+        greenSpan = soup.find_all("span", attrs={'style': 'color: green;'})[0]
         greenParent = greenSpan.parent
         # print(greenParent.getText())
 
