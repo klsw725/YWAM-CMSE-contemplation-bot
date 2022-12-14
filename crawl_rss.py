@@ -25,25 +25,32 @@ def getBibleContent():
 
     if result:
         content = []
-        # content.append(dateStr)
-        content.append(soup.find("h1").string)
+        content.append(dateStr)
+        # content.append(soup.find("h1").string)
         content.append(soup.find("h3").string)
 
-        # entry = soup.findAll("p")[1]
+        entries = soup.findAll("span")
+        
+        for entry in entries:
+          greenSpans = entry.find_all("span", style="font-family: NanumGothic; letter-spacing: 0.2px;")
+          for span in greenSpans:
+            content.append(span.getText())
+          
+        # print(entry)
         
         # test1 = soup.findAll("span")
-        greenSpan = soup.find_all("span", attrs={'style': 'color: green;'})[0]
-        greenParent = greenSpan.parent
+        # greenSpan = entry[0].find_all("span", attrs={'style': {'color: green;'}})[0]
+        # greenParent = greenSpan.parent
         # print(greenParent.getText())
 
-        while True:
-            # print(greenParent.getText())
-            content.append(greenParent.getText().replace('\xa0', ' '))
-            if greenParent.nextSibling is None:
-                break
-            greenParent = greenParent.nextSibling
+        # while True:
+        #     # print(greenParent.getText())
+        #     content.append(greenParent.getText().replace('\xa0', ' '))
+        #     if greenParent.nextSibling is None:
+        #         break
+        #     greenParent = greenParent.nextSibling
 
-        # print(content)
+        print(content)
         return content
     return None
 # getBibleContent()
@@ -52,15 +59,15 @@ def messageFormat():
   i = 0
   content = ""
   for entry in getBibleContent():
-    i=i+1
-    if i<3:
-      content = content + entry + "\n\n"
-    else:
-  # content = content + entry + "\n\n"
-      content = content + entry + "\n"
+    content = content + entry + "\n\n"
+  #   i=i+1
+  #   if i<3:
+  #     content = content + entry + "\n\n"
+  #   else:
+  # # content = content + entry + "\n\n"
+  #     content = content + entry + "\n"
   # if(i % 4 == 0):
 #     content = content + "\n\n"
-  print(content)
   return content
 
 
