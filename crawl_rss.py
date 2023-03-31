@@ -32,9 +32,14 @@ def getBibleContent():
         entries = soup.findAll("span")
         
         for entry in entries:
-          greenSpans = entry.find_all("span", style="font-family: NanumGothic; letter-spacing: 0.2px;")
-          for span in greenSpans:
-            content.append(span.getText())
+          if entry.find("span", "number") :
+             if not entry.find("br") :
+                content.append(entry.getText())
+            #  greenSpans = entry.find_all("span", style="font-family: NanumGothic; letter-spacing: 0.2px;")
+             
+          # greenSpans = entry.find_all("span", style="font-family: NanumGothic; letter-spacing: 0.2px;")
+          # for span in greenSpans:
+          #   content.append(span.getText())
           
         # print(entry)
         
