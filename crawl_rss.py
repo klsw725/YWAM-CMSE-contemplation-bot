@@ -25,16 +25,20 @@ def getBibleContent():
 
     if result:
         content = []
-        content.append(dateStr)
+        content.append(dateStr + "\n\n")
         # content.append(soup.find("h1").string)
-        content.append(soup.find("h3").string)
+        content.append(soup.find("h3").string + "\n\n")
 
         entries = soup.findAll("span")
         
         for entry in entries:
           if entry.find("span", "number") :
              if not entry.find("br") :
+                content.append(entry.getText() + "\n\n")
+          else:
+             if entry.get('style') != None and "font-family: NanumGothic;" in entry.get('style'):
                 content.append(entry.getText())
+          
             #  greenSpans = entry.find_all("span", style="font-family: NanumGothic; letter-spacing: 0.2px;")
              
           # greenSpans = entry.find_all("span", style="font-family: NanumGothic; letter-spacing: 0.2px;")
@@ -55,7 +59,7 @@ def getBibleContent():
         #         break
         #     greenParent = greenParent.nextSibling
 
-        print(content)
+        # print(content)
         return content
     return None
 # getBibleContent()
@@ -64,7 +68,7 @@ def messageFormat():
   i = 0
   content = ""
   for entry in getBibleContent():
-    content = content + entry + "\n\n"
+    content = content + entry
   #   i=i+1
   #   if i<3:
   #     content = content + entry + "\n\n"
@@ -73,6 +77,7 @@ def messageFormat():
   #     content = content + entry + "\n"
   # if(i % 4 == 0):
 #     content = content + "\n\n"
+  print(content)
   return content
 
 
