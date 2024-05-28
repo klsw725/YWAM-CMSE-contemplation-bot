@@ -9,6 +9,8 @@ from datetime import datetime
 
 url = "https://cmsemeditation.blogspot.com/feeds/posts/default"
 
+date = ""
+words = ""
 
 def getBibleContent():
     d = feedparser.parse(url)
@@ -25,50 +27,32 @@ def getBibleContent():
 
     if result:
         content = []
-        content.append(dateStr + "\n\n")
-        # content.append(soup.find("h1").string)
-        content.append(soup.find("h3").string + "\n\n")
-
-        entries = soup.findAll("span")
+        # content.append(dateStr + "\n\n")
+        global date, words
+        date = dateStr
+        words = soup.find("h2").string
+        entries = soup.findAll("div")
         
         for entry in entries:
-          if entry.find("span", "number") :
-             if not entry.find("br") :
-                content.append(entry.getText() + "\n\n")
-          else:
-             if entry.get('style') != None and "font-family: NanumGothic;" in entry.get('style'):
-                content.append(entry.getText())
-          
-            #  greenSpans = entry.find_all("span", style="font-family: NanumGothic; letter-spacing: 0.2px;")
-             
-          # greenSpans = entry.find_all("span", style="font-family: NanumGothic; letter-spacing: 0.2px;")
-          # for span in greenSpans:
-          #   content.append(span.getText())
-          
-        # print(entry)
+            content.append(entry.getText())
         
-        # test1 = soup.findAll("span")
-        # greenSpan = entry[0].find_all("span", attrs={'style': {'color: green;'}})[0]
-        # greenParent = greenSpan.parent
-        # print(greenParent.getText())
-
-        # while True:
-        #     # print(greenParent.getText())
-        #     content.append(greenParent.getText().replace('\xa0', ' '))
-        #     if greenParent.nextSibling is None:
-        #         break
-        #     greenParent = greenParent.nextSibling
-
-        # print(content)
         return content
+    
     return None
 # getBibleContent()
 
 def messageFormat():
-  i = 0
   content = ""
-  for entry in getBibleContent():
-    content = content + entry
+
+  max_len = max(getBibleContent(), key=len)
+
+  def add_prefix(match):
+      return '\n\n' + match.group(0)
+  
+  content = content + date + '\n\n' + words + '\n'
+  content = content + re.sub('\\d+\\s', add_prefix, max_len)
+
+
   #   i=i+1
   #   if i<3:
   #     content = content + entry + "\n\n"
